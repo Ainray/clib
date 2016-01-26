@@ -8,4 +8,4 @@ cleanobj:
 
 .PHONY : clean
 clean:
-	rm libmean.so *.o
+	rm libcio.so *.o
