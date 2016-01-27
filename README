@@ -3,4 +3,37 @@ date: 20160124
 bug-report: wwzhang0421@163.com
 introudciton: This clib includes my general c libraries. The lib just a excersie,
             : rewriten from scratch. And this project may not be written regularly.
-			: If some recommendations, contact me. I will very glad.
+	    : If some recommendations, contact me. I will very glad.
+	    : The library supports debug with gdb.
+
+How to use this library
+---------------------------
+ Just include the head file in your source, as:
+	
+	#include"cio.h"
+ 
+ But when you compile with this library, you have two ways.
+ On one hand, you build your program with imported library, i.e., "libcio.a".
+	
+	gcc -c your_program.c -I$(LIBDIR)
+	gcc -o your_program.exe your_program.o -L$(LIBDIR) -lcio
+ 
+ NOTE: $(LIBDIR) is just the path where this libray and head file exists. 
+ For example:
+		
+		/f/Prj/clib
+		
+ On the other hand, you also build your program without imported library.
+
+	gcc -o your_program.exe your_program.o $(LIBDIR)/cio.dll
+
+How to rebuild this library
+---------------------------
+It is very simple.
+
+	$ make clean
+	
+	$ make
+
+NOTE: '$' is your command line promt.
+	
