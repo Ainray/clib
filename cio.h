@@ -62,10 +62,10 @@ int putline(FILE *pfile, char *s);
 // date:20160127
 // note: this function does not check the validity of pointers.
 // 	   : this function return the index starting at zero, if "s2" within "s1"
-//     : by changing the input parameter, which is the number of strings in "s1".
+//     : by "pos" parameter, which is the number of strings in "s1".
 //     : this function also return the pointer of first occurance of "s2" within
 //     : "s1[index]".
-char * strstrs(char *s1[], char *s2,int *num);
+char * strstrs(char *s1[], char *s2,int num,int *pos,int caseswitch);
 
 // function: str2word
 // introduction: covert string into word-by-word string array,

@@ -137,14 +137,52 @@ int str2word(char *s, char *ws[])
 	return i;
 }
 
-char * strstrs(char *s1[], char *s2,int *num)
+char * strstrs(char *s1[], char *s2,int num, int *pos,int caseswitch)
 {
 	int i;
-	char *p=NULL;	
-	for(i=0;i<*num;++i)
-		if( (p=strstr(s1[i],s2) )) //found
+	char *p=NULL, *p1,*p2;
+	int stat;
+	for(i=0;i<num;++i)
+	{	
+		stat=0; // matching status
+		if(caseswitch)  //non case-sensitive
+		{
+			p1=s1[i];
+			p2=s2;
+			while(*p1 && *p2)
+			{
+				if(*p1==*p2 || (*p1+'a'-'A')==*p2 || *p1==(*p2+'a'-'A') ) 
+				{
+					if(!stat)// first matching character
+					{
+						p=p1;
+						stat=1;	
+					}
+					++p1;++p2;										
+				}
+				else if(stat) //match ends
+				{
+					if(!*p2) //found s2
+						break;
+					else //just matching part of s2,refinding  from start
+					{
+						++p1;
+						p2=s2;
+						stat=0;
+					}
+				}
+				else
+					++p1;
+			}
+			if(!stat || (!*p1 && *p2)) //p1 ends befor s2
+				p=NULL;
+			else//found s2
+				break;
+		}
+		else if( (p=strstr(s1[i],s2) )) //found
 			break;
-	*num=i;
+	}
+	*pos=i;
 	return p;
 }
 
