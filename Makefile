@@ -52,8 +52,9 @@ $(SHARELIB) : $(OBJ)
 
 .PHONYOBJ : cleanobj
 cleanobj:
-	rm $(OBJ)
+	-git rm $(OBJ)
 
 .PHONY : clean
 clean:
-	-rm  $(OBJ) $(LIB) $(SHARELIB)
+	-rm  $(LIB) $(SHARELIB)
+	-git rm $(OBJ)
