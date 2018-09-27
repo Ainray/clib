@@ -12,17 +12,6 @@ void firstupper(char *s)
 	}
 }
 
-int getline(FILE *pfile,char *s, int lim)
-{
-	int c,i;
-	for(i=0;i< lim-1 && ( c=getc(pfile) )!=EOF && c!='\n'; ++i)
-		s[i]=c;
-	if (c=='\n')
-		s[i++]=c;
-	s[i]='\0';
-	return i;
-}
-
 int isalphas(char *s)
 {
 	int i=0;

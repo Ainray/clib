@@ -20,14 +20,6 @@ extern "C" {
 //     : this function runns in the in-place way, so the original string is changed.
 void firstupper(char *s);
 
-// function: getline 
-// introduction: read a line with a limit of naximum number of characters per line
-//               return the number of characters.
-// note: this function does check the validity of file pointer;
-//     : this function does alloc memory for the line buffer, i.e., s;
-//     : this function does support at most 1000 characters per line;
-int getline(FILE *pfile,char *s, int lim);
-
 // function: isalphas
 // introduction: check whether all characters of a string is alphabe
 //             : return false or true.
