@@ -1,5 +1,12 @@
 #include "sort.h"
 
+template <class T>
+void swap(T *a, int i,int j){
+    T tmp=a[i];
+    a[i]=a[j];
+    a[j]=tmp;
+}
+
 // selection sort
 template<class T>
 void ssort(T *a,int n){
@@ -14,7 +21,6 @@ void ssort(T *a,int n){
 }
 
 // bubble sort
-
 template<class T>
 void bsort(T* a, int n){
     int i,j;
@@ -24,4 +30,19 @@ void bsort(T* a, int n){
             if(a[j]<a[j+1]){tmp=a[j];a[j]=a[j+1];a[j+1]=tmp;}
         }
     }
+}
+
+// quick sort
+template<class T>
+void qsork(T*a,int left, int right){
+    int i,last;
+    if(left>=right) return;
+    last=left;
+    swap(a,left, (left+right)/2);  //the center as partition element
+    for(i=left+1;i<=right;++i)
+        if(a[i]>a[left])
+            swap(a,++last,i);
+    swap(a,left,last);
+    qsort(a,left,last-1);   // elements > partition element
+    qsort(a,last+1,right);  // elements < partition element
 }
