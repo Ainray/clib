@@ -35,5 +35,5 @@ void writeinifile(const char *section,const char *name, const char *value,const 
 void writeinifile(const char *section,const char *name, double value, int len, const char *fname);
 
 int syscall(const char *exefullname, const char *argv);
-
+int sysworkmemorymb(); //obtain system work memory, useful for debug in old vs version
 #endif

@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include<windows.h>
 #include<strsafe.h>
+#include<Psapi.h>
 
 #include "ainray_win32api.h"
 #include <stdio.h>
 
 #pragma comment(lib, "User32.lib")
+#pragma comment(lib,"Psapi.lib")
 #pragma warning(disable:4996)
 
 
@@ -29,13 +31,30 @@ int dirCreate(const char *path)
 	free(tpath);
 	return ret;
 }
+int dirCopy(char *pTo, char *pFrom)
+{
+	// path shoud be double-null terminated
+	SHFILEOPSTRUCT FileOp{ 0 };
+	//不出现确认对话框; 需要时直接创建一个文件夹,不需用户确定
+	FileOp.fFlags = FOF_SILENT | FOF_NOERRORUI | FOF_NOCONFIRMMKDIR | FOF_NOCONFIRMATION;
+	FileOp.pFrom = pFrom;
+	FileOp.pTo = pTo;
+	FileOp.wFunc = FO_COPY;
+	int ret = SHFileOperation(&FileOp);
+	if (FileOp.fAnyOperationsAborted == TRUE)
+		ret = -1;
+	return ret;
+}
 
 int dirRemove(const char * path)
 {
 	// path shoud be double-null terminated
 	SHFILEOPSTRUCT FileOp;
 	memset(&FileOp, 1, sizeof(FileOp));
-	FileOp.fFlags = FOF_ALLOWUNDO; //允许放回回收站
+	if (confirm == TRUE)
+		FileOp.fFlags = FOF_ALLOWUNDO; //允许放回回收站
+	else
+		FileOp.fFlags = FOF_ALLOWUNDO | FOF_NOCONFIRMATION |FOF_NOERRORUI|FOF_NO_UI;
 	
 	LPTSTR tpath;
 	STR_C2WIN32(tpath, path);
@@ -307,7 +326,10 @@ int syscall(const char *exefullname, const char *argv)
 	// WinExec("\"C:\\Program Files\\MyApp.exe\" -L -S", ...)
 	char cmdline[RESTART_MAX_CMD_LINE];
 
-	_snprintf(cmdline,RESTART_MAX_CMD_LINE, "\"%s\" \"%s\"", exefullname, argv);
+	if(argv == NULL)
+		_snprintf(cmdline,RESTART_MAX_CMD_LINE, "\"%s\"", exefullname);
+	else
+		_snprintf(cmdline,RESTART_MAX_CMD_LINE, "\"%s\" \"%s\"", exefullname, argv);
 
 	LPTSTR tcmdline;
 	STR_C2WIN32(tcmdline, cmdline);
@@ -335,4 +357,12 @@ int syscall(const char *exefullname, const char *argv)
 	CloseHandle(piProcessInfo.hProcess);
 	CloseHandle(piProcessInfo.hThread);
 	return 0;
+}
+
+int sysworkmemorymb()
+{
+	HANDLE handle = GetCurrentProcess();
+	PROCESS_MEMORY_COUNTERS pmc;
+	GetProcessMemoryInfo(handle, &pmc, sizeof(pmc));
+	return (int)pmc.WorkingSetSize/1024/1024;
 }
