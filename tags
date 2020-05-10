@@ -1,0 +1,100 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AINRAY_C_H	ainray_c.h	9;"	d
+AINRAY_WIN32API_H	ainray_win32api.h	2;"	d
+CIO_H	cio.h	7;"	d
+EXAMPLE_DLL	Makefile	44;"	d	file:
+FALSE	cio.h	12;"	d
+HYPHEN	ainray_c.cpp	11;"	d	file:
+MAX_PATH2	ainray_win32api.h	26;"	d
+SHYPHEN	ainray_c.cpp	12;"	d	file:
+SORT_H	sort.h	2;"	d
+STR_C2WIN32	ainray_win32api.cpp	20;"	d	file:
+TRUE	cio.h	11;"	d
+WIN32STR_ALLOC	ainray_win32api.cpp	19;"	d	file:
+bsort	sort.cpp	/^void bsort(T* a, int n){$/;"	f	signature:(T* a, int n)
+bsort	sort.h	/^template<class T> void bsort(T* a, int n);$/;"	p	signature:(T* a, int n)
+comparearray	egrevlex.cpp	/^int comparearray(int *array1, int *array2, int length)$/;"	f	signature:(int *array1, int *array2, int length)
+dirCopy	ainray_win32api.cpp	/^int dirCopy(char *pTo, char *pFrom)$/;"	f	signature:(char *pTo, char *pFrom)
+dirCreate	ainray_win32api.cpp	/^int dirCreate(const char *path)$/;"	f	signature:(const char *path)
+dirCreate	ainray_win32api.h	/^int dirCreate(char *path);$/;"	p	signature:(char *path)
+dirExists	ainray_win32api.cpp	/^int dirExists(const char *dirName_in)$/;"	f	signature:(const char *dirName_in)
+dirExists	ainray_win32api.h	/^int dirExists(const char *dirName_in);$/;"	p	signature:(const char *dirName_in)
+dirRemove	ainray_win32api.cpp	/^int dirRemove(const char * path)$/;"	f	signature:(const char * path)
+dirRemove	ainray_win32api.h	/^int dirRemove(char *path);$/;"	p	signature:(char *path)
+dirRename	ainray_win32api.cpp	/^int dirRename(const char *pTo, const char *pFrom)$/;"	f	signature:(const char *pTo, const char *pFrom)
+dirRename	ainray_win32api.h	/^int dirRename(char *pTo, char *pFrom);$/;"	p	signature:(char *pTo, char *pFrom)
+dwExitCode	.ainray_win32api.cpp.swp	/^/;"	v
+eleorder	egrevlex.cpp	/^int eleorder(int *array, int length, int *limit)$/;"	f	signature:(int *array, int length, int *limit)
+fileExists	ainray_win32api.cpp	/^int fileExists(const char *fname)$/;"	f	signature:(const char *fname)
+fileExists	ainray_win32api.h	/^int fileExists(const char *fileName);$/;"	p	signature:(const char *fileName)
+firstupper	cio.c	/^void firstupper(char *s)$/;"	f	signature:(char *s)
+firstupper	cio.h	/^void firstupper(char *s);$/;"	p	signature:(char *s)
+getcurrentpath	ainray_win32api.cpp	/^char *getcurrentpath(char *path, int n)$/;"	f	signature:(char *path, int n)
+getcurrentpath	ainray_win32api.h	/^char *getcurrentpath(char *path, int n);$/;"	p	signature:(char *path, int n)
+getuserpath	ainray_win32api.cpp	/^char* getuserpath(char *path, int n)$/;"	f	signature:(char *path, int n)
+getuserpath	ainray_win32api.h	/^char* getuserpath(char *path, int n);$/;"	p	signature:(char *path, int n)
+handle	.ainray_win32api.cpp.swp	/^/;"	v
+isalphas	cio.c	/^int isalphas(char *s)$/;"	f	signature:(char *s)
+isalphas	cio.h	/^int isalphas(char *s);$/;"	p	signature:(char *s)
+isort	sort.cpp	/^void isort(T* a, int n){$/;"	f	signature:(T* a, int n)
+library	README	/^ But when you compile with this library, you have two ways.$/;"	v
+library	README	/^ On one hand, you build your program with imported library, i.e., "libcio.a".$/;"	v
+listdir	ainray_win32api.cpp	/^int listdir(char *dir, char ***subdirs)$/;"	f	signature:(char *dir, char ***subdirs)
+listdir	ainray_win32api.h	/^int listdir(char *dir, char ***subdirs);$/;"	p	signature:(char *dir, char ***subdirs)
+lower	cio.c	/^void lower(char *s)$/;"	f	signature:(char *s)
+lower	cio.h	/^void lower(char *s);$/;"	p	signature:(char *s)
+main	egrevlex.cpp	/^int main()$/;"	f	signature:()
+main	iloveu.c	/^int main()$/;"	f	signature:()
+main	qsort.cpp	/^int main()$/;"	f	signature:()
+merge	sort.cpp	/^void merge(T *a, int l,int m,int r){$/;"	f	signature:(T *a, int l,int m,int r)
+msort	sort.cpp	/^void msort(T *a, int left, int right){$/;"	f	signature:(T *a, int left, int right)
+next_permutation	egrevlex.cpp	/^int next_permutation(int *array, int length)$/;"	f	signature:(int *array, int length)
+next_permutation	egrevlex.cpp	/^int next_permutation(int *array, int length);$/;"	p	file:	signature:(int *array, int length)
+next_permutation	egrevlex.cpp	/^int next_permutation(int *array, int length, int *limit)$/;"	f	signature:(int *array, int length, int *limit)
+next_permutation	egrevlex.cpp	/^int next_permutation(int *array, int length, int *limit);$/;"	p	file:	signature:(int *array, int length, int *limit)
+next_sameweight	egrevlex.cpp	/^int next_sameweight(int *array, int length, int *limit, int weight)$/;"	f	signature:(int *array, int length, int *limit, int weight)
+next_sameweight	egrevlex.cpp	/^int next_sameweight(int *array, int length, int *limit, int weight);$/;"	p	file:	signature:(int *array, int length, int *limit, int weight)
+path_cat	ainray_c.cpp	/^char* path_cat(int mode, char *fullpath, int n, ...)$/;"	f	signature:(int mode, char *fullpath, int n, ...)
+path_cat	ainray_c.h	/^char* path_cat(int mode, char *fullpath, int n, ...);$/;"	p	signature:(int mode, char *fullpath, int n, ...)
+pmc	.ainray_win32api.cpp.swp	/^/;"	v
+putcs	cio.c	/^int putcs(FILE *pfile, char *s)$/;"	f	signature:(FILE *pfile, char *s)
+putcs	cio.h	/^int putcs(FILE *pfile, char *s);$/;"	p	signature:(FILE *pfile, char *s)
+putline	cio.c	/^int putline(FILE *pfile,char *s)$/;"	f	signature:(FILE *pfile,char *s)
+putline	cio.h	/^int putline(FILE *pfile, char *s);$/;"	p	signature:(FILE *pfile, char *s)
+qsort	qsort.cpp	/^void qsort(double *a,int left, int right){$/;"	f	signature:(double *a,int left, int right)
+quicksork	sort.cpp	/^void quicksork(T*a,int left, int right){$/;"	f	signature:(T*a,int left, int right)
+quicksort	sort.h	/^template<class T> void quicksort(T* a, int left,int right);$/;"	p	signature:(T* a, int left,int right)
+readinifile	ainray_win32api.cpp	/^char*  readinifile(const char *section, const char *name, char *value, int len, const char *fname)$/;"	f	signature:(const char *section, const char *name, char *value, int len, const char *fname)
+readinifile	ainray_win32api.cpp	/^double readinifile(char *section, char *name, int len, char *fname)$/;"	f	signature:(char *section, char *name, int len, char *fname)
+readinifile	ainray_win32api.h	/^char*  readinifile(const char *section, const char *name, char *value, int len, const char *fname);$/;"	p	signature:(const char *section, const char *name, char *value, int len, const char *fname)
+readinifile	ainray_win32api.h	/^double readinifile(char *section, char *name, int len, char *fname); $/;"	p	signature:(char *section, char *name, int len, char *fname)
+shellsort	sort.cpp	/^void shellsort(T* a, int n){$/;"	f	signature:(T* a, int n)
+ssort	sort.cpp	/^void ssort(T *a,int n){$/;"	f	signature:(T *a,int n)
+ssort	sort.h	/^template<class T> void ssort(T* a, int n);$/;"	p	signature:(T* a, int n)
+str2word	cio.c	/^int str2word(char *s, char *ws[])$/;"	f	signature:(char *s, char *ws[])
+str2word	cio.h	/^int str2word(char *s, char **ws);$/;"	p	signature:(char *s, char **ws)
+str_c2win32	ainray_win32api.cpp	/^LPTSTR str_c2win32(LPTSTR dst, int dsize, const char * src)$/;"	f	signature:(LPTSTR dst, int dsize, const char * src)
+str_c2win32	ainray_win32api.cpp	/^LPTSTR str_c2win32(LPTSTR dst, int dsize, const char * src);$/;"	p	file:	signature:(LPTSTR dst, int dsize, const char * src)
+str_win322c	ainray_win32api.cpp	/^char * str_win322c(char * dst, int dsize, LPCTSTR src)$/;"	f	signature:(char * dst, int dsize, LPCTSTR src)
+str_win322c	ainray_win32api.cpp	/^char * str_win322c(char * dst, int dsize, LPCTSTR src);$/;"	p	file:	signature:(char * dst, int dsize, LPCTSTR src)
+strstrs	cio.c	/^char * strstrs(char *s1[], char *s2,int num, int *pos,int caseswitch)$/;"	f	signature:(char *s1[], char *s2,int num, int *pos,int caseswitch)
+strstrs	cio.h	/^char * strstrs(char *s1[], char *s2,int num,int *pos,int caseswitch);$/;"	p	signature:(char *s1[], char *s2,int num,int *pos,int caseswitch)
+swap	qsort.cpp	/^void swap(double *a, int i, int j)$/;"	f	signature:(double *a, int i, int j)
+swap	sort.cpp	/^void swap(T *a, int i,int j){$/;"	f	signature:(T *a, int i,int j)
+syscall	ainray_win32api.cpp	/^int syscall(const char *exefullname, const char *argv)$/;"	f	signature:(const char *exefullname, const char *argv)
+syscall	ainray_win32api.h	/^int syscall(const char *exefullname, const char *argv);$/;"	p	signature:(const char *exefullname, const char *argv)
+sysworkmemorymb	ainray_win32api.cpp	/^int sysworkmemorymb()$/;"	f	signature:()
+sysworkmemorymb	ainray_win32api.h	/^int sysworkmemorymb(); \/\/obtain system work memory, useful for debug in old vs version$/;"	p	signature:()
+upper	cio.c	/^void upper(char *s)$/;"	f	signature:(char *s)
+upper	cio.h	/^void upper(char *s);$/;"	p	signature:(char *s)
+weight2array	egrevlex.cpp	/^int weight2array(int *array, int length, int *limit, int weight)$/;"	f	signature:(int *array, int length, int *limit, int weight)
+weight2array	egrevlex.cpp	/^int weight2array(int *array, int length, int *limit, int weight);$/;"	p	file:	signature:(int *array, int length, int *limit, int weight)
+writeinifile	ainray_win32api.cpp	/^void writeinifile(const char *section,const char *name, const char *value,const char *fname)$/;"	f	signature:(const char *section,const char *name, const char *value,const char *fname)
+writeinifile	ainray_win32api.cpp	/^void writeinifile(const char *section,const char *name, double value, int len, const char *fname)$/;"	f	signature:(const char *section,const char *name, double value, int len, const char *fname)
+writeinifile	ainray_win32api.h	/^void writeinifile(const char *section,const char *name, const char *value,const char *fname);$/;"	p	signature:(const char *section,const char *name, const char *value,const char *fname)
+writeinifile	ainray_win32api.h	/^void writeinifile(const char *section,const char *name, double value, int len, const char *fname);$/;"	p	signature:(const char *section,const char *name, double value, int len, const char *fname)

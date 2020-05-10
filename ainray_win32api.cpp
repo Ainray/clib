@@ -16,7 +16,8 @@
 LPTSTR str_c2win32(LPTSTR dst, int dsize, const char * src);
 char * str_win322c(char * dst, int dsize, LPCTSTR src);
 
-#define WIN32STR_ALLOC(ptr, n) (ptr = (LPTSTR)(calloc(n, sizeof(TCHAR))))
+// one more for null-terminaled
+#define WIN32STR_ALLOC(ptr, n) (ptr = (LPTSTR)(calloc(n+1, sizeof(TCHAR)))) 
 #define STR_C2WIN32(tpath, path) {int n = (int)strlen(path);WIN32STR_ALLOC(tpath, n);str_c2win32(tpath, n, path);}
 
 int dirCreate(const char *path)
@@ -301,10 +302,10 @@ LPTSTR str_c2win32(LPTSTR dst, int dsize, const char * src)
 {
 #ifdef UNICODE
 	USES_CONVERSION;
-	StringCchCopy(dst, dsize, A2W(src));
+	StringCchCopy(dst, dsize+1, A2W(src));
 	return dst;
 #else
-	StringCchCopy(dst, dsize, src);
+	StringCchCopy(dst, dsize+1, src);
 	return dst;
 #endif
 }
@@ -313,10 +314,10 @@ char * str_win322c(char * dst, int dsize, LPCTSTR src)
 {
 #ifdef UNICODE
 	USES_CONVERSION;
-	StringCchCopyA(dst, dsize, W2A(src));
+	StringCchCopyA(dst, dsize+1, W2A(src));
 	return dst;
 #else
-	StringCchCopy(dst, dsize, src);
+	StringCchCopy(dst, dsize+1, src);
 	return dst;
 #endif
 }
