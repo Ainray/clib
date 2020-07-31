@@ -1,7 +1,10 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+#include<tchar.h>
+#include <atlconv.h>
 #include<windows.h>
 #include<strsafe.h>
 #include<Psapi.h>
+#include<shellapi.h>
 
 #include "ainray_win32api.h"
 #include <stdio.h>
@@ -9,7 +12,6 @@
 #pragma comment(lib, "User32.lib")
 #pragma comment(lib,"Psapi.lib")
 #pragma warning(disable:4996)
-
 
 // ---- C String convector from or to WIN32 String ------
 
@@ -35,7 +37,7 @@ int dirCreate(const char *path)
 int dirCopy(char *pTo, char *pFrom)
 {
 	// path shoud be double-null terminated
-	SHFILEOPSTRUCT FileOp{ 0 };
+/*	SHFILEOPSTRUCT FileOp{ 0 };
 	//不出现确认对话框; 需要时直接创建一个文件夹,不需用户确定
 	FileOp.fFlags = FOF_SILENT | FOF_NOERRORUI | FOF_NOCONFIRMMKDIR | FOF_NOCONFIRMATION;
 	FileOp.pFrom = pFrom;
@@ -44,10 +46,51 @@ int dirCopy(char *pTo, char *pFrom)
 	int ret = SHFileOperation(&FileOp);
 	if (FileOp.fAnyOperationsAborted == TRUE)
 		ret = -1;
-	return ret;
+	return ret;*/
+	return 0;
 }
+int dirList(char *dir, char ***subdirs)
+{
+	WIN32_FIND_DATA ffd;
+	TCHAR szDir[MAX_PATH];
+	HANDLE hFind = INVALID_HANDLE_VALUE;
 
-int dirRemove(const char * path)
+	str_c2win32(szDir, MAX_PATH, dir);
+	StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
+
+	// Find the first file in the directory.
+	hFind = FindFirstFile(szDir, &ffd);
+	if (INVALID_HANDLE_VALUE == hFind)
+		return -1;
+	// List all the files in the directory with some info about them.
+	// first count it
+	int cnt = 0;
+	do
+	{
+		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+			++cnt;
+	} while (FindNextFile(hFind, &ffd) != 0);
+	FindClose(hFind);
+
+	*subdirs = (char **)calloc(cnt, sizeof(char *));
+	for (int i = 0; i < cnt; ++i)
+	{
+		*(*subdirs + i) = (char *)calloc(MAX_PATH2, sizeof(char));
+	}
+
+	hFind = FindFirstFile(szDir, &ffd);
+	for (int i = 0; FindNextFile(hFind, &ffd) != NULL;)
+	{
+		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		{
+			str_win322c(*(*subdirs + i), MAX_PATH2, ffd.cFileName);
+			++i;
+		}
+	}
+	FindClose(hFind);
+	return cnt;
+}
+int dirRemove(const char * path, int confirm)
 {
 	// path shoud be double-null terminated
 	SHFILEOPSTRUCT FileOp;
@@ -163,47 +206,7 @@ char* getuserpath(char *path, int n)
 	}
 }
 
-int listdir(char *dir, char ***subdirs)
-{
-	WIN32_FIND_DATA ffd;
-	TCHAR szDir[MAX_PATH];
-	HANDLE hFind = INVALID_HANDLE_VALUE;
 
-	str_c2win32(szDir, MAX_PATH, dir);
-	StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
-
-	// Find the first file in the directory.
-	hFind = FindFirstFile(szDir, &ffd);
-	if (INVALID_HANDLE_VALUE == hFind)
-		return -1;
-	// List all the files in the directory with some info about them.
-	// first count it
-	int cnt = 0;
-	do
-	{
-		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			++cnt;
-	} while (FindNextFile(hFind, &ffd) != 0);
-	FindClose(hFind);
-
-	*subdirs = (char **)calloc(cnt, sizeof(char *));
-	for (int i = 0; i < cnt; ++i)
-	{
-		*(*subdirs + i) =(char *)calloc(MAX_PATH2, sizeof(char));
-	}
-
-	hFind = FindFirstFile(szDir, &ffd);
-	for (int i = 0; FindNextFile(hFind, &ffd) != NULL;)
-	{
-		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-		{
-			str_win322c(*(*subdirs + i), MAX_PATH2, ffd.cFileName);
-			++i;
-		}
-	}
-	FindClose(hFind);
-	return cnt;
-}
 
 char*  readinifile(const char *section, const char *name, char *value, int len, const char *fname)
 {
@@ -309,7 +312,6 @@ LPTSTR str_c2win32(LPTSTR dst, int dsize, const char * src)
 	return dst;
 #endif
 }
-
 char * str_win322c(char * dst, int dsize, LPCTSTR src)
 {
 #ifdef UNICODE

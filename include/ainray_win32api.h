@@ -16,7 +16,8 @@ features:
 
 int dirCreate(char *path);
 int dirExists(const char *dirName_in);
-int dirRemove(char *path);
+int dirList(char *dir, char ***subdirs);
+int dirRemove(char *path, int confirm=FALSE);
 int dirRename(char *pTo, char *pFrom);
 
 int fileExists(const char *fileName);
@@ -27,8 +28,6 @@ int fileExists(const char *fileName);
 char *getcurrentpath(char *path, int n);
 char* getuserpath(char *path, int n);
 
-int listdir(char *dir, char ***subdirs);
-
 char*  readinifile(const char *section, const char *name, char *value, int len, const char *fname);
 double readinifile(char *section, char *name, int len, char *fname); 
 void writeinifile(const char *section,const char *name, const char *value,const char *fname);
@@ -36,4 +35,5 @@ void writeinifile(const char *section,const char *name, double value, int len, c
 
 int syscall(const char *exefullname, const char *argv);
 int sysworkmemorymb(); //obtain system work memory, useful for debug in old vs version
+
 #endif
