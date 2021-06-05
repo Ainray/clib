@@ -3,3 +3,7 @@
 *.out
 *.tag
 *.tags
+bin
+build/
+build_*/
+tags

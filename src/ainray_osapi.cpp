@@ -1,20 +1,8 @@
-//#include "stdafx.h"
-#include<tchar.h>
-#include <atlconv.h>
-#include<windows.h>
-#include<strsafe.h>
-#include<Psapi.h>
-#include<shellapi.h>
+#include "ainray_osapi.h"
 
-#include "ainray_win32api.h"
-#include <stdio.h>
-
-#pragma comment(lib, "User32.lib")
-#pragma comment(lib,"Psapi.lib")
-#pragma warning(disable:4996)
+#ifdef _WIN32_
 
 // ---- C String convector from or to WIN32 String ------
-
 LPTSTR str_c2win32(LPTSTR dst, int dsize, const char * src);
 char * str_win322c(char * dst, int dsize, LPCTSTR src);
 
@@ -22,23 +10,27 @@ char * str_win322c(char * dst, int dsize, LPCTSTR src);
 #define WIN32STR_ALLOC(ptr, n) (ptr = (LPTSTR)(calloc(n+1, sizeof(TCHAR)))) 
 #define STR_C2WIN32(tpath, path) {int n = (int)strlen(path);WIN32STR_ALLOC(tpath, n);str_c2win32(tpath, n, path);}
 
-int dirCreate(const char *path)
+#endif
+
+int dir_create(const char *path)
 {
+	int ret = 0;
+#ifdef _WIN32_
 	LPTSTR tpath;
 	STR_C2WIN32(tpath, path);
-
-	int ret = 0;
 	if(!CreateDirectory(tpath, NULL))
 		ret = -1;
 
 	free(tpath);
+#else
+
+#endif
 	return ret;
 }
-int dirCopy(char *pTo, char *pFrom)
+int dir_copy(char *pTo, char *pFrom)
 {
 	// path shoud be double-null terminated
 /*	SHFILEOPSTRUCT FileOp{ 0 };
-	//不出现确认对话框; 需要时直接创建一个文件夹,不需用户确定
 	FileOp.fFlags = FOF_SILENT | FOF_NOERRORUI | FOF_NOCONFIRMMKDIR | FOF_NOCONFIRMATION;
 	FileOp.pFrom = pFrom;
 	FileOp.pTo = pTo;
@@ -49,8 +41,10 @@ int dirCopy(char *pTo, char *pFrom)
 	return ret;*/
 	return 0;
 }
-int dirList(char *dir, char ***subdirs)
+int dir_list(char *dir, char ***subdirs)
 {
+	int cnt = 0;
+#ifdef _WIN32_
 	WIN32_FIND_DATA ffd;
 	TCHAR szDir[MAX_PATH];
 	HANDLE hFind = INVALID_HANDLE_VALUE;
@@ -64,7 +58,6 @@ int dirList(char *dir, char ***subdirs)
 		return -1;
 	// List all the files in the directory with some info about them.
 	// first count it
-	int cnt = 0;
 	do
 	{
 		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
@@ -88,11 +81,16 @@ int dirList(char *dir, char ***subdirs)
 		}
 	}
 	FindClose(hFind);
+#else
+
+#endif
 	return cnt;
 }
-int dirRemove(const char * path, int confirm)
+int dir_remove(const char * path, int confirm)
 {
 	// path shoud be double-null terminated
+	int ret = 0;
+#ifdef _WIN32_
 	SHFILEOPSTRUCT FileOp;
 	memset(&FileOp, 1, sizeof(FileOp));
 	if (confirm == TRUE)
@@ -106,15 +104,18 @@ int dirRemove(const char * path, int confirm)
 	FileOp.pFrom = tpath;
 	FileOp.pTo = NULL; //一定要是NULL
 	FileOp.wFunc = FO_DELETE; //删除操作
-	int ret = SHFileOperation(&FileOp);
+	ret = SHFileOperation(&FileOp);
 	if (FileOp.fAnyOperationsAborted == TRUE)
 		ret = -1;
 
 	free(tpath);
+#endif
 	return ret;
 }
-int dirRename(const char *pTo, const char *pFrom)
+int dir_rename(const char *pTo, const char *pFrom)
 {
+	int ret = 0;
+#ifdef _WIN32_
 	// pTo and pFrom shoud be double-null terminated
 	/*SHFILEOPSTRUCT FileOp = { 0 };
 	FileOp.fFlags = FOF_NOCONFIRMATION | FOF_NOCONFIRMMKDIR | FOF_NOERRORUI | FOF_SILENT; //不出现确认对话框
@@ -128,23 +129,27 @@ int dirRename(const char *pTo, const char *pFrom)
 	LPTSTR tpFrom, tpTo;
 	STR_C2WIN32(tpFrom,pFrom);
 	STR_C2WIN32(tpTo, pTo);
-	int ret = MoveFile(tpFrom, tpTo);
+	ret = MoveFile(tpFrom, tpTo);
 
 	free(tpFrom);
 	free(tpTo);
+#else
 
+#endif
 	return ret;
 }
 
-int dirExists(const char *dirName_in)
+int dir_exist(const char *dirName_in)
 {
 	if (dirName_in[0] == '\0')
-		return FALSE;
+            return FALSE;
 	
+	int ret = FALSE;
+
+#ifdef _WIN32_
 	LPTSTR tdirName_in;
 	STR_C2WIN32(tdirName_in, dirName_in);
 
-	int ret = FALSE;
 	DWORD ftyp = GetFileAttributes(tdirName_in);
 	if (ftyp == INVALID_FILE_ATTRIBUTES)
 		ret = FALSE;  //something is wrong with your path!
@@ -154,27 +159,38 @@ int dirExists(const char *dirName_in)
 		ret = FALSE;
 
 	free(tdirName_in);
+#else
+
+#endif
 
 	return ret ;    // this is not a directory!
 }
 
-int fileExists(const char *fname)
+int file_exist(const char *fname)
 {
 
+	int ret = FALSE;
+#ifdef _WIN32_
 	LPTSTR fileName;
 	STR_C2WIN32(fileName, fname);
-	
+#ifdef _TEST_
+	printf("in function file_exist: %s\n", fname);
+#endif	
 	DWORD       fileAttr;
 	fileAttr = GetFileAttributes(fileName);
-	int ret = FALSE;
 	if ( (fileAttr ^ FILE_ATTRIBUTE_DIRECTORY) && (fileAttr != INVALID_FILE_ATTRIBUTES))
 		ret = TRUE;
 	free(fileName);
 
+#else
+
+        ret =  !access(fname, F_OK);
+#endif
 	return ret;
 }
-char *getcurrentpath(char *path, int n)
+char *getuserpath(char *path, int n)
 {
+#ifdef _WIN32_
 	LPCTSTR homeProfile = _T("USERPROFILE");
 	TCHAR tpath[MAX_PATH];
 
@@ -189,9 +205,14 @@ char *getcurrentpath(char *path, int n)
 		str_win322c(path, n, tpath);
 		return path;
 	}
+#else
+
+		return path;
+#endif
 }
-char* getuserpath(char *path, int n)
+char* getcurrentpath(char *path, int n)
 {
+#ifdef _WIN32_
 	TCHAR tpath[MAX_PATH];
 	int dwRet = GetModuleFileName(NULL, tpath, n);
 	if (dwRet > n)
@@ -204,12 +225,15 @@ char* getuserpath(char *path, int n)
 		str_win322c(path, n, tpath);
 		return path;
 	}
+#else
+
+		return path;
+#endif
 }
-
-
 
 char*  readinifile(const char *section, const char *name, char *value, int len, const char *fname)
 {
+#ifdef _WIN32_
 	LPTSTR tsection, tname, tfname;
 	
 	STR_C2WIN32(tsection, section);
@@ -218,22 +242,25 @@ char*  readinifile(const char *section, const char *name, char *value, int len, 
 
 	int len2 = len;
 #ifdef UNICODE
-		len2 = len/2;
+        len2 = len/2;
 #endif
 	LPTSTR tvalue = (LPTSTR) (calloc(len2, sizeof(TCHAR)));
 	GetPrivateProfileString(tsection, tname, _T(""), tvalue, len2, tfname);
 	
 	str_win322c(value, len, tvalue);
-
 	free(tsection);
 	free(tname);
 	free(tfname);
+#else
 
+#endif
 	return value; 
 }
 
 double readinifile(char *section, char *name, int len, char *fname)
 {
+	double vvalue=0.0;
+#ifdef _WIN32_
 	LPTSTR tsection, tname, tfname;
 	
 	STR_C2WIN32(tsection, section);
@@ -251,20 +278,22 @@ double readinifile(char *section, char *name, int len, char *fname)
 	char *value = (char *)calloc(len, sizeof(char));
 	str_win322c(value, len, tvalue);
 
-	double vvalue=strtod(value, NULL);
+	vvalue=strtod(value, NULL);
 	
 	free(tsection);
 	free(tname);
 	free(tfname);
 	free(tvalue);
 	free(value);
-
+#else
+#endif
 	return vvalue;
 }
 
 
 void writeinifile(const char *section,const char *name, const char *value,const char *fname)
 {
+#ifdef _WIN32_
 	LPTSTR tsection, tname, tfname, tvalue;
 	
 	STR_C2WIN32(tsection, section);
@@ -278,9 +307,13 @@ void writeinifile(const char *section,const char *name, const char *value,const 
 	free(tname);
 	free(tfname);
 	free(tvalue);
+#else
+
+#endif
 }
 void writeinifile(const char *section,const char *name, double value, int len, const char *fname)
 {
+#ifdef _WIN32_
 	LPTSTR tsection, tname, tfname, tvalue;
 	
 	STR_C2WIN32(tsection, section);
@@ -299,8 +332,11 @@ void writeinifile(const char *section,const char *name, double value, int len, c
 	free(tname);
 	free(tfname);
 	free(tvalue);
+#else
+#endif
 }
 
+#ifdef _WIN32_
 LPTSTR str_c2win32(LPTSTR dst, int dsize, const char * src)
 {
 #ifdef UNICODE
@@ -311,6 +347,7 @@ LPTSTR str_c2win32(LPTSTR dst, int dsize, const char * src)
 	StringCchCopy(dst, dsize+1, src);
 	return dst;
 #endif
+
 }
 char * str_win322c(char * dst, int dsize, LPCTSTR src)
 {
@@ -323,9 +360,11 @@ char * str_win322c(char * dst, int dsize, LPCTSTR src)
 	return dst;
 #endif
 }
-
+#endif
 int syscall(const char *exefullname, const char *argv)
 {
+#ifdef _WIN32_
+
 	// WinExec("\"C:\\Program Files\\MyApp.exe\" -L -S", ...)
 	char cmdline[RESTART_MAX_CMD_LINE];
 
@@ -359,13 +398,20 @@ int syscall(const char *exefullname, const char *argv)
 	TerminateProcess(piProcessInfo.hProcess, 0);
 	CloseHandle(piProcessInfo.hProcess);
 	CloseHandle(piProcessInfo.hThread);
+#else
+
+#endif
 	return 0;
 }
 
 int sysworkmemorymb()
 {
+        int res = 0;
+#ifdef _WIN32_
 	HANDLE handle = GetCurrentProcess();
 	PROCESS_MEMORY_COUNTERS pmc;
 	GetProcessMemoryInfo(handle, &pmc, sizeof(pmc));
-	return (int)pmc.WorkingSetSize/1024/1024;
+	res = (int)pmc.WorkingSetSize/1024/1024;
+#endif
+        return res;
 }
