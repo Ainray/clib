@@ -15,7 +15,7 @@
 #endif
 #define ERROR_BUFLEN	1024
 
-char *geterrorinfo();
-void seterrorinfo(char *s);
-int	 getlasterrorno();
+const char *geterrorinfo();
+void seterrorinfo(const char *s);
+int getlasterrorno();
 void seterrorno(int errno);

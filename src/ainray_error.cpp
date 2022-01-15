@@ -7,7 +7,7 @@ static int __error_no__ = 0;
 static int __error_offset__ = 0;
 static int __error_len__ = _ERROR_BUFLEN_;
 
-void seterrorinfo(char *s)
+void seterrorinfo(const char *s)
 {
 	int n = 0;
 	if (__error_offset__ > 0) //not empty, padding linefeed
@@ -25,14 +25,14 @@ void seterrorinfo(char *s)
 	__error_len__ -= n;
 	__error_offset__ += n;
 }
-char *geterrorinfo()
+const char *geterrorinfo()
 {
 	__error_len__ = _ERROR_BUFLEN_; //flush buffer
 	__error_offset__ = 0;
 
 	return errorinfobuf;
 }
-int	 getlasterrorno()
+int getlasterrorno()
 {
 	return __error_no__;
 }

@@ -4,6 +4,7 @@
 *.tag
 *.tags
 bin
-build/
+build*/
 build_*/
 tags
+.vs/
